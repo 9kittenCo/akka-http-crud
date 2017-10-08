@@ -1,21 +1,20 @@
 package api
 
-import model.Customer
-import model.dao.CustomersDao
-import spray.json.{DefaultJsonProtocol, RootJsonFormat}
-
-import scala.concurrent.ExecutionContext.Implicits.global
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import spray.json._
+import model.Customer
+import model.dao.CustomersDao
+import spray.json.{DefaultJsonProtocol, RootJsonFormat, _}
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 trait JsonMapping extends DefaultJsonProtocol {
   implicit val customerFormat: RootJsonFormat[Customer] = jsonFormat4(Customer)
 }
 
 trait CustomersApi extends JsonMapping {
-  val customersApi: Route =
+  val customersRoute: Route =
     (path("customers") & get) {
       complete(CustomersDao.findAll().map(_.toJson))
     } ~
@@ -35,5 +34,4 @@ trait CustomersApi extends JsonMapping {
       (path("customers" / IntNumber) & delete) { id =>
         complete(CustomersDao.delete(id).map(_.toJson))
       }
-
 }

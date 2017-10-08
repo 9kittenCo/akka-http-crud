@@ -9,7 +9,7 @@ trait ApiErrorHandler {
   implicit def myExceptionHandler: ExceptionHandler = ExceptionHandler {
     case e: NoSuchElementException =>
       extractUri { uri =>
-        complete(HttpResponse(NotFound, entity = s"Invalid id: ${e.getMessage}"))
+        complete(HttpResponse(NotFound, entity = s" Invalid id: ${e.getMessage}"))
       }
   }
 }

@@ -15,8 +15,10 @@ object Main extends App with Config with MigrationConfig with Routes {
 
   migrate()
 
+  val bindingFuture = Http()
+    .bindAndHandle(handler = logRequestResult("log")(routes)
+      , interface = httpInterface, port = httpPort)
 
-  val bindingFuture = Http().bindAndHandle(handler = logRequestResult("log")(routes), interface = httpInterface, port = httpPort)
   println(s"Server online at $httpInterface:$httpPort\nPress RETURN to stop...")
   scala.io.StdIn.readLine()
 

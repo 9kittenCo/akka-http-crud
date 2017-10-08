@@ -12,10 +12,11 @@ object CustomersDao extends BaseDao {
 
   def create(user: Customer): Future[Long] = customersTable returning customersTable.map(_.id) += user
 
-  def update(id:Long, newCustomer: Customer): Future[Int] = {
+  def update(id: Long, newCustomer: Customer): Future[Int] = {
     customersTable.filter(_.id === id).map(customer => (customer.name, customer.age, customer.gender))
       .update((newCustomer.name, newCustomer.age, newCustomer.gender))
   }
+
 
   def delete(id: Long): Future[Int] = {
     customersTable.filter(_.id === id).delete
